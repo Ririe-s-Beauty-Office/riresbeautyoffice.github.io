@@ -1,1 +1,2373 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ririe's Beauty Office - Professional Beauty Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+            --secondary-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #ffffff;
+            --section-bg: linear-gradient(135deg, #ffeef0 0%, #ffe6e8 100%);
+            --shadow: rgba(255, 107, 107, 0.2);
+        }
+
+        [data-theme="dark"] {
+            --primary-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+            --secondary-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2a2a2a;
+            --section-bg: linear-gradient(135deg, #2a1a1d 0%, #3a2025 100%);
+            --shadow: rgba(255, 107, 107, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding-top: 70px;
+        }
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loader-logo {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            box-shadow: 0 2px 20px var(--shadow);
+            z-index: 999;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .navbar-logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .navbar-menu a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile-menu-btn svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--text-color);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 1001;
+            background: var(--primary-gradient);
+            border: none;
+            padding: 12px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 25px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            z-index: 998;
+            transition: all 0.3s ease;
+            animation: bounce 2s infinite;
+        }
+
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 35px rgba(37, 211, 102, 0.6);
+        }
+
+        .floating-whatsapp svg {
+            width: 35px;
+            height: 35px;
+            fill: white;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 998;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        .back-to-top svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 100px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: sparkle 20s linear infinite;
+        }
+
+        @keyframes sparkle {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-100px);
+            }
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            animation: fadeInDown 1s ease;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.4em;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section {
+            padding: 60px 20px;
+        }
+
+        .section-alt {
+            background: var(--section-bg);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 50px;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 5px 20px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 20px;
+            object-fit: cover;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .about-text {
+            color: var(--text-color);
+        }
+
+        .about-text h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 30px;
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+            font-weight: 500;
+            box-shadow: 0 3px 15px var(--shadow);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-gradient);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-full {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 300px;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item::after {
+            content: '🔍 Click to view';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 0.9;
+        }
+
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: var(--primary-gradient);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-gradient);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+        }
+
+        .lightbox-prev {
+            left: -70px;
+        }
+
+        .lightbox-next {
+            right: -70px;
+        }
+
+        .before-after-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .before-after-item {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .comparison-slider {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .comparison-slider img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .comparison-slider .after {
+            clip-path: inset(0 50% 0 0);
+        }
+
+        .slider-handle {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: white;
+            cursor: ew-resize;
+            transform: translateX(-50%);
+        }
+
+        .slider-handle::before {
+            content: '⟷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--primary-gradient);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .comparison-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+        }
+
+        .comparison-labels span {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .catalogue {
+            background: var(--bg-color);
+        }
+
+        .catalogue-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .catalogue-item {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .catalogue-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 45px var(--shadow);
+        }
+
+        .catalogue-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: var(--secondary-gradient);
+        }
+
+        .catalogue-content {
+            padding: 25px;
+        }
+
+        .catalogue-content h3 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .catalogue-content p {
+            color: var(--text-color);
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .catalogue-content ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .catalogue-content ul li {
+            padding: 8px 0;
+            color: var(--text-color);
+            opacity: 0.85;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .catalogue-content ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .catalogue-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .package-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card.featured {
+            border: 3px solid #ff6b6b;
+        }
+
+        .package-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--primary-gradient);
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .package-card h3 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .package-price {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 20px 0;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .package-card ul {
+            list-style: none;
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .package-card ul li {
+            padding: 10px 0;
+            color: var(--text-color);
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .package-card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--secondary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .testimonial-info h4 {
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .stars {
+            color: #ffd700;
+            font-size: 1.2em;
+        }
+
+        .testimonial-text {
+            color: var(--text-color);
+            opacity: 0.9;
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        .hours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hours-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 25px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .hours-day {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .hours-time {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .instagram-item {
+            position: relative;
+            height: 200px;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .instagram-item:hover {
+            transform: scale(1.05);
+        }
+
+        .instagram-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .instagram-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+        }
+
+        .instagram-item:hover .instagram-overlay {
+            opacity: 0.8;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            margin-bottom: 15px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            color: var(--text-color);
+            transition: background 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--section-bg);
+        }
+
+        .faq-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 25px;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding: 0 25px 20px;
+        }
+
+        .newsletter-form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: var(--card-bg);
+            border-radius: 50px;
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            font-size: 1em;
+            outline: none;
+        }
+
+        .newsletter-form button {
+            padding: 15px 35px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+            transform: scale(1.05);
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 35px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .contact {
+            text-align: center;
+            background: var(--bg-color);
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+
+        .contact-item svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        .contact-item h3 {
+            font-size: 1.3em;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .contact-item p {
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            padding: 22px 45px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.3em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.5);
+        }
+
+        .whatsapp-btn svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 15px var(--shadow);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px);
+            background: var(--primary-gradient);
+        }
+
+        .social-links a svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--text-color);
+        }
+
+        .social-links a:hover svg {
+            fill: white;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .team-member {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px var(--shadow);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+
+        .team-photo {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background: var(--secondary-gradient);
+        }
+
+        .team-info {
+            padding: 25px;
+        }
+
+        .team-info h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .team-info p {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        footer {
+            background: var(--primary-gradient);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .section-title {
+                font-size: 2.2em;
+            }
+
+            .gallery,
+            .gallery-full {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                gap: 40px;
+            }
+
+            .theme-toggle {
+                top: 15px;
+                right: 80px;
+            }
+
+            .navbar-container {
+                padding: 0 15px;
+            }
+
+            .navbar-logo {
+                font-size: 1.2em;
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: var(--card-bg);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-top: 40px;
+                gap: 20px;
+                transition: left 0.3s ease;
+                box-shadow: 0 5px 20px var(--shadow);
+            }
+
+            .navbar-menu.active {
+                left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .lightbox-prev {
+                left: 10px;
+            }
+
+            .lightbox-next {
+                right: 10px;
+            }
+
+            .floating-whatsapp {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .floating-whatsapp svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            .back-to-top {
+                bottom: 80px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-logo">✨ Ririe's Beauty Office ✨</div>
+            <div class="loader-spinner"></div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#home" class="navbar-logo">✨ Ririe's Beauty Office</a>
+            <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Toggle menu">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                </svg>
+            </button>
+            <ul class="navbar-menu" id="navMenu">
+                <li><a href="#home" onclick="closeMenu()">Home</a></li>
+                <li><a href="#about" onclick="closeMenu()">About</a></li>
+                <li><a href="#gallery" onclick="closeMenu()">Gallery</a></li>
+                <li><a href="#catalogue" onclick="closeMenu()">Services</a></li>
+                <li><a href="#packages" onclick="closeMenu()">Packages</a></li>
+                <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+    </button>
+
+    <a href="https://wa.me/27123456789?text=Hi!%20I'd%20like%20to%20book%20an%20appointment" class="floating-whatsapp"
+        target="_blank" aria-label="Chat on WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+        </svg>
+    </a>
+
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()" aria-label="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M7 14l5-5 5 5z" />
+        </svg>
+    </button>
+
+    <header class="header" id="home">
+        <h1>✨ Ririe's Beauty Office ✨</h1>
+        <p>Professional Beauty Services Tailored Just For You</p>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="500">0</div>
+                    <div class="stat-label">Happy Clients</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="7">0</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="15">0</div>
+                    <div class="stat-label">Services Offered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="98">0</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt" id="about">
+        <div class="container">
+            <h2 class="section-title">About Ririe's Beauty Office</h2>
+            <div class="about-content">
+                <img src="https://images.unsplash.com/photo-1560869713-bf165a4b18e0?w=800&h=600&fit=crop"
+                    alt="About Ririe's Beauty Office" class="about-image">
+                <div class="about-text">
+                    <h3>Your Beauty Destination</h3>
+                    <p>Welcome to Ririe's Beauty Office, where passion meets perfection. With over 7 years of experience
+                        in the beauty industry, we've dedicated ourselves to making every client feel beautiful,
+                        confident, and pampered.</p>
+                    <p>Our founder, Ririe, is a certified beauty professional with expertise in nail artistry, skincare,
+                        makeup application, and various beauty treatments. Her vision was to create a warm, welcoming
+                        space where everyone can experience premium beauty services.</p>
+                    <p>We use only the highest quality products and stay updated with the latest beauty trends and
+                        techniques to ensure you receive the best service possible. Your satisfaction and safety are our
+                        top priorities.</p>
+                    <p>At Ririe's Beauty Office, we believe that beauty is personal, and every service is customized to
+                        enhance your natural features and boost your confidence.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Our Work Highlights</h2>
+            <p class="section-subtitle">Discover the artistry and excellence in every treatment</p>
+            <div class="gallery">
+                <div class="gallery-item" onclick="openLightbox(0)">
+                    <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&h=400&fit=crop"
+                        alt="Nail art design">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(1)">
+                    <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=400&fit=crop"
+                        alt="Eyelash extensions">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(2)">
+                    <img src="https://images.unsplash.com/photo-1560869713-bf165a4b18e0?w=600&h=400&fit=crop"
+                        alt="Facial treatment">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(3)">
+                    <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&h=400&fit=crop"
+                        alt="Manicure service">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(4)">
+                    <img src="https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=600&h=400&fit=crop"
+                        alt="Makeup application">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(5)">
+                    <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=600&h=400&fit=crop"
+                        alt="Eyebrow shaping">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt" id="gallery">
+        <div class="container">
+            <h2 class="section-title">Complete Gallery</h2>
+            <p class="section-subtitle">Browse through our stunning portfolio of beauty transformations</p>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterGallery('all')">All</button>
+                <button class="filter-btn" onclick="filterGallery('nails')">Nails</button>
+                <button class="filter-btn" onclick="filterGallery('lashes')">Lashes</button>
+                <button class="filter-btn" onclick="filterGallery('makeup')">Makeup</button>
+                <button class="filter-btn" onclick="filterGallery('skincare')">Skincare</button>
+            </div>
+            <div class="gallery-full" id="galleryContainer">
+                <div class="gallery-item" data-category="nails" onclick="openLightbox(6)">
+                    <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&h=400&fit=crop"
+                        alt="Nail art design">
+                </div>
+                <div class="gallery-item" data-category="lashes" onclick="openLightbox(7)">
+                    <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=400&fit=crop"
+                        alt="Eyelash extensions">
+                </div>
+                <div class="gallery-item" data-category="skincare" onclick="openLightbox(8)">
+                    <img src="https://images.unsplash.com/photo-1560869713-bf165a4b18e0?w=600&h=400&fit=crop"
+                        alt="Facial treatment">
+                </div>
+                <div class="gallery-item" data-category="nails" onclick="openLightbox(9)">
+                    <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&h=400&fit=crop"
+                        alt="Manicure service">
+                </div>
+                <div class="gallery-item" data-category="makeup" onclick="openLightbox(10)">
+                    <img src="https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=600&h=400&fit=crop"
+                        alt="Makeup application">
+                </div>
+                <div class="gallery-item" data-category="lashes" onclick="openLightbox(11)">
+                    <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=600&h=400&fit=crop"
+                        alt="Eyebrow shaping">
+                </div>
+                <div class="gallery-item" data-category="nails" onclick="openLightbox(12)">
+                    <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&h=400&fit=crop"
+                        alt="Nail designs">
+                </div>
+                <div class="gallery-item" data-category="lashes" onclick="openLightbox(13)">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop"
+                        alt="Lash and brow work">
+                </div>
+                <div class="gallery-item" data-category="skincare" onclick="openLightbox(14)">
+                    <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&h=400&fit=crop"
+                        alt="Skincare treatment">
+                </div>
+                <div class="gallery-item" data-category="makeup" onclick="openLightbox(15)">
+                    <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&h=400&fit=crop"
+                        alt="Professional makeup">
+                </div>
+                <div class="gallery-item" data-category="skincare" onclick="openLightbox(16)">
+                    <img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=600&h=400&fit=crop"
+                        alt="Beauty spa treatment">
+                </div>
+                <div class="gallery-item" data-category="skincare" onclick="openLightbox(17)">
+                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&h=400&fit=crop"
+                        alt="Relaxation therapy">
+                </div>
+                <div class="gallery-item" data-category="nails" onclick="openLightbox(18)">
+                    <img src="https://images.unsplash.com/photo-1599206676335-193c82b13c9e?w=600&h=400&fit=crop"
+                        alt="Nail polish application">
+                </div>
+                <div class="gallery-item" data-category="makeup" onclick="openLightbox(19)">
+                    <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=600&h=400&fit=crop"
+                        alt="Makeup brushes">
+                </div>
+                <div class="gallery-item" data-category="makeup" onclick="openLightbox(20)">
+                    <img src="https://images.unsplash.com/photo-1596704017254-9b121068ec31?w=600&h=400&fit=crop"
+                        alt="Beauty products">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox(event)">×</button>
+            <button class="lightbox-nav lightbox-prev" onclick="changeImage(-1, event)">‹</button>
+            <img id="lightbox-img" src="" alt="Gallery image">
+            <button class="lightbox-nav lightbox-next" onclick="changeImage(1, event)">›</button>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Before & After</h2>
+            <p class="section-subtitle">See the amazing transformations we create</p>
+            <div class="before-after-container">
+                <div class="before-after-item">
+                    <div class="comparison-slider" onmousemove="slideCompare(event, 0)"
+                        ontouchmove="slideCompare(event, 0)">
+                        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&h=400&fit=crop&sat=-100"
+                            alt="Before" class="before">
+                        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&h=400&fit=crop"
+                            alt="After" class="after" id="after-0">
+                        <div class="slider-handle" id="handle-0"></div>
+                    </div>
+                    <div class="comparison-labels">
+                        <span>Before</span>
+                        <span>After</span>
+                    </div>
+                </div>
+                <div class="before-after-item">
+                    <div class="comparison-slider" onmousemove="slideCompare(event, 1)"
+                        ontouchmove="slideCompare(event, 1)">
+                        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=400&fit=crop&sat=-100"
+                            alt="Before" class="before">
+                        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=400&fit=crop"
+                            alt="After" class="after" id="after-1">
+                        <div class="slider-handle" id="handle-1"></div>
+                    </div>
+                    <div class="comparison-labels">
+                        <span>Before</span>
+                        <span>After</span>
+                    </div>
+                </div>
+                <div class="before-after-item">
+                    <div class="comparison-slider" onmousemove="slideCompare(event, 2)"
+                        ontouchmove="slideCompare(event, 2)">
+                        <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&h=400&fit=crop&sat=-100"
+                            alt="Before" class="before">
+                        <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&h=400&fit=crop"
+                            alt="After" class="after" id="after-2">
+                        <div class="slider-handle" id="handle-2"></div>
+                    </div>
+                    <div class="comparison-labels">
+                        <span>Before</span>
+                        <span>After</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt catalogue" id="catalogue">
+        <div class="container">
+            <h2 class="section-title">Service Catalogue</h2>
+            <p class="section-subtitle">Explore our complete range of premium beauty treatments</p>
+            <div class="catalogue-grid">
+                <div class="catalogue-item">
+                    <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&h=400&fit=crop"
+                        alt="Nail Services" class="catalogue-image">
+                    <div class="catalogue-content">
+                        <h3>💅 Nail Services</h3>
+                        <p>Transform your nails with our expert care and stunning designs</p>
+                        <ul>
+                            <li>Classic Manicure & Pedicure</li>
+                            <li>Gel Polish Application</li>
+                            <li>Acrylic & Gel Extensions</li>
+                            <li>Nail Art & Design</li>
+                            <li>French Manicure</li>
+                        </ul>
+                        <div class="catalogue-price">From R180</div>
+                    </div>
+                </div>
+
+                <div class="catalogue-item">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop"
+                        alt="Lash & Brow Services" class="catalogue-image">
+                    <div class="catalogue-content">
+                        <h3>👁️ Lash & Brow Services</h3>
+                        <p>Enhance your natural beauty with expertly crafted lashes and brows</p>
+                        <ul>
+                            <li>Classic Eyelash Extensions</li>
+                            <li>Volume Lash Extensions</li>
+                            <li>Eyebrow Shaping & Threading</li>
+                            <li>Brow & Lash Tinting</li>
+                            <li>Lash Lift & Tint</li>
+                        </ul>
+                        <div class="catalogue-price">From R120</div>
+                    </div>
+                </div>
+
+                <div class="catalogue-item">
+                    <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&h=400&fit=crop"
+                        alt="Facial Treatments" class="catalogue-image">
+                    <div class="catalogue-content">
+                        <h3>✨ Facial Treatments</h3>
+                        <p>Rejuvenate and refresh with our luxurious facial treatments</p>
+                        <ul>
+                            <li>Deep Cleansing Facial</li>
+                            <li>Hydrating Facial</li>
+                            <li>Anti-Aging Treatment</li>
+                            <li>Brightening Facial</li>
+                            <li>Acne Treatment Facial</li>
+                        </ul>
+                        <div class="catalogue-price">From R400</div>
+                    </div>
+                </div>
+
+                <div class="catalogue-item">
+                    <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&h=400&fit=crop"
+                        alt="Makeup Services" class="catalogue-image">
+                    <div class="catalogue-content">
+                        <h3>🎨 Makeup Services</h3>
+                        <p>Look flawless for any occasion with professional makeup artistry</p>
+                        <ul>
+                            <li>Bridal Makeup</li>
+                            <li>Evening & Event Makeup</li>
+                            <li>Natural Day Makeup</li>
+                            <li>Makeup Lessons</li>
+                            <li>Special Effects Makeup</li>
+                        </ul>
+                        <div class="catalogue-price">From R300</div>
+                    </div>
+                </div>
+
+                <div class="catalogue-item">
+                    <img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=600&h=400&fit=crop"
+                        alt="Waxing Services" class="catalogue-image">
+                    <div class="catalogue-content">
+                        <h3>💆 Waxing Services</h3>
+                        <p>Achieve silky smooth skin with our professional waxing treatments</p>
+                        <ul>
+                            <li>Full Body Waxing</li>
+                            <li>Brazilian Wax</li>
+                            <li>Leg Waxing (Full/Half)</li>
+                            <li>Arm & Underarm Waxing</li>
+                            <li>Facial Waxing</li>
+                        </ul>
+                        <div class="catalogue-price">From R150</div>
+                    </div>
+                </div>
+
+                <div class="catalogue-item">
+                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&h=400&fit=crop"
+                        alt="Spa Treatments" class="catalogue-image">
+                    <div class="catalogue-content">
+                        <h3>🌸 Spa Treatments</h3>
+                        <p>Indulge in ultimate relaxation and pampering</p>
+                        <ul>
+                            <li>Full Body Massage</li>
+                            <li>Hot Stone Therapy</li>
+                            <li>Body Scrubs & Wraps</li>
+                            <li>Aromatherapy Sessions</li>
+                            <li>Spa Packages</li>
+                        </ul>
+                        <div class="catalogue-price">From R450</div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="#" class="download-btn"
+                    onclick="alert('Price list download will be available soon!'); return false;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                    </svg>
+                    Download Full Price List
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="packages">
+        <div class="container">
+            <h2 class="section-title">Special Packages</h2>
+            <p class="section-subtitle">Save more with our exclusive combo deals</p>
+            <div class="packages-grid">
+                <div class="package-card">
+                    <h3>💖 Basic Glow</h3>
+                    <div class="package-price">R650</div>
+                    <p style="color: var(--text-color); opacity: 0.8; margin-bottom: 20px;">Perfect for a quick refresh
+                    </p>
+                    <ul>
+                        <li>Classic Manicure</li>
+                        <li>Classic Pedicure</li>
+                        <li>Eyebrow Shaping</li>
+                    </ul>
+                </div>
+
+                <div class="package-card featured">
+                    <div class="package-badge">POPULAR</div>
+                    <h3>✨ Full Glam</h3>
+                    <div class="package-price">R1,200</div>
+                    <p style="color: var(--text-color); opacity: 0.8; margin-bottom: 20px;">Our most popular package</p>
+                    <ul>
+                        <li>Gel Manicure & Pedicure</li>
+                        <li>Hydrating Facial</li>
+                        <li>Lash & Brow Tinting</li>
+                        <li>Upper Lip Wax</li>
+                        <li>Free Nail Art Design</li>
+                    </ul>
+                </div>
+
+                <div class="package-card">
+                    <h3>👑 Royal Treatment</h3>
+                    <div class="package-price">R2,500</div>
+                    <p style="color: var(--text-color); opacity: 0.8; margin-bottom: 20px;">Ultimate luxury experience
+                    </p>
+                    <ul>
+                        <li>Deluxe Spa Manicure & Pedicure</li>
+                        <li>Anti-Aging Facial Treatment</li>
+                        <li>Volume Lash Extensions</li>
+                        <li>Full Body Massage</li>
+                        <li>Professional Makeup</li>
+                        <li>Complimentary Refreshments</li>
+                    </ul>
+                </div>
+
+                <div class="package-card">
+                    <h3>💐 Bridal Bliss</h3>
+                    <div class="package-price">R3,800</div>
+                    <p style="color: var(--text-color); opacity: 0.8; margin-bottom: 20px;">Perfect for your special day
+                    </p>
+                    <ul>
+                        <li>Bridal Makeup (Trial + Wedding Day)</li>
+                        <li>Luxury Facial (1 week before)</li>
+                        <li>Gel Manicure & Pedicure</li>
+                        <li>Volume Lash Extensions</li>
+                        <li>Hair Styling</li>
+                        <li>Bridesmaid Makeup (2 people)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">What Our Clients Say</h2>
+            <p class="section-subtitle">Real reviews from our beautiful clients</p>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">T</div>
+                        <div class="testimonial-info">
+                            <h4>Thandi Mthembu</h4>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Ririe's attention to detail is incredible! My nails have never looked
+                        better. The salon is clean, professional, and the atmosphere is so relaxing. Highly recommend!"
+                    </p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">L</div>
+                        <div class="testimonial-info">
+                            <h4>Lerato Khumalo</h4>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Best lash extensions I've ever had! They lasted for weeks and looked so
+                        natural. Ririe is a true artist. I won't go anywhere else!"</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">N</div>
+                        <div class="testimonial-info">
+                            <h4>Nomsa Dlamini</h4>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The facial treatment was amazing! My skin has never felt so refreshed
+                        and glowing. Ririe really knows her stuff and uses quality products."</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">S</div>
+                        <div class="testimonial-info">
+                            <h4>Sarah Johnson</h4>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Ririe did my bridal makeup and I felt like a princess! She understood
+                        exactly what I wanted and made me feel beautiful on my special day."</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">Z</div>
+                        <div class="testimonial-info">
+                            <h4>Zinhle Nkosi</h4>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Professional, friendly, and talented! The atmosphere is so welcoming
+                        and I always leave feeling pampered. Ririe's Beauty Office is my go-to spot!"</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">M</div>
+                        <div class="testimonial-info">
+                            <h4>Michelle van der Merwe</h4>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"I've been coming here for over a year and the service is consistently
+                        excellent. Great value for money and Ririe always makes time to ensure you're happy!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Our Team</h2>
+            <p class="section-subtitle">Meet the talented professionals behind your beauty transformations</p>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop"
+                        alt="Ririe - Founder" class="team-photo">
+                    <div class="team-info">
+                        <h3>Ririe</h3>
+                        <p>Founder & Master Beautician</p>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Certified in Advanced Beauty Therapy, Nail
+                            Technology & Makeup Artistry</p>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop"
+                        alt="Senior Beautician" class="team-photo">
+                    <div class="team-info">
+                        <h3>Precious</h3>
+                        <p>Senior Beautician</p>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Specialist in Skincare & Facial Treatments</p>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop"
+                        alt="Nail Technician" class="team-photo">
+                    <div class="team-info">
+                        <h3>Thuli</h3>
+                        <p>Nail Technician</p>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Expert in Gel Extensions & Nail Art</p>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop"
+                        alt="Lash Specialist" class="team-photo">
+                    <div class="team-info">
+                        <h3>Sindi</h3>
+                        <p>Lash Specialist</p>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Certified Lash Extension Technician</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Operating Hours</h2>
+            <p class="section-subtitle">Visit us at your convenience</p>
+            <div class="hours-grid">
+                <div class="hours-item">
+                    <span class="hours-day">Monday</span>
+                    <span class="hours-time">9:00 AM - 6:00 PM</span>
+                </div>
+                <div class="hours-item">
+                    <span class="hours-day">Tuesday</span>
+                    <span class="hours-time">9:00 AM - 6:00 PM</span>
+                </div>
+                <div class="hours-item">
+                    <span class="hours-day">Wednesday</span>
+                    <span class="hours-time">9:00 AM - 6:00 PM</span>
+                </div>
+                <div class="hours-item">
+                    <span class="hours-day">Thursday</span>
+                    <span class="hours-time">9:00 AM - 8:00 PM</span>
+                </div>
+                <div class="hours-item">
+                    <span class="hours-day">Friday</span>
+                    <span class="hours-time">9:00 AM - 8:00 PM</span>
+                </div>
+                <div class="hours-item">
+                    <span class="hours-day">Saturday</span>
+                    <span class="hours-time">8:00 AM - 5:00 PM</span>
+                </div>
+                <div class="hours-item">
+                    <span class="hours-day">Sunday</span>
+                    <span class="hours-time">Closed</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Follow Us on Instagram</h2>
+            <p class="section-subtitle">Stay updated with our latest work and special offers</p>
+            <div class="instagram-grid">
+                <div class="instagram-item">
+                    <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop"
+                        alt="Instagram post">
+                    <div class="instagram-overlay">📷</div>
+                </div>
+                <div class="instagram-item">
+                    <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=400&fit=crop"
+                        alt="Instagram post">
+                    <div class="instagram-overlay">📷</div>
+                </div>
+                <div class="instagram-item">
+                    <img src="https://images.unsplash.com/photo-1560869713-bf165a4b18e0?w=400&h=400&fit=crop"
+                        alt="Instagram post">
+                    <div class="instagram-overlay">📷</div>
+                </div>
+                <div class="instagram-item">
+                    <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=400&h=400&fit=crop"
+                        alt="Instagram post">
+                    <div class="instagram-overlay">📷</div>
+                </div>
+                <div class="instagram-item">
+                    <img src="https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=400&h=400&fit=crop"
+                        alt="Instagram post">
+                    <div class="instagram-overlay">📷</div>
+                </div>
+                <div class="instagram-item">
+                    <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=400&h=400&fit=crop"
+                        alt="Instagram post">
+                    <div class="instagram-overlay">📷</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Find answers to common questions</p>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Do I need to book an appointment?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, we recommend booking in advance to secure your preferred time slot. Walk-ins are welcome
+                        subject to availability, but appointments ensure you won't have to wait.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>What payment methods do you accept?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        We accept cash, all major credit/debit cards, and bank transfers. Payment is due at the time of
+                        service.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How long do lash extensions last?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Lash extensions typically last 3-4 weeks with proper care. We recommend coming in for fills
+                        every 2-3 weeks to maintain the full look.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>What is your cancellation policy?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        We require at least 24 hours notice for cancellations or rescheduling. Late cancellations may
+                        incur a fee.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Are your products safe for sensitive skin?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! We use high-quality, professional products suitable for all skin types. If you have
+                        allergies or sensitivities, please inform us during booking so we can accommodate your needs.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Do you offer bridal packages?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Absolutely! We offer comprehensive bridal packages including makeup trials, beauty treatments,
+                        and group bookings. Contact us to discuss your special day requirements.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Can I bring my own nail polish?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        While we have an extensive collection of colors, you're welcome to bring your own polish.
+                        However, we use professional-grade products that ensure the best results and longevity.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Stay Connected</h2>
+            <p class="section-subtitle">Subscribe to our newsletter for exclusive offers and beauty tips</p>
+            <form class="newsletter-form" onsubmit="return submitNewsletter(event)">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="section section-alt contact">
+        <div class="container">
+            <h2 class="section-title" id="contact">Get In Touch</h2>
+            <p class="section-subtitle">We'd love to hear from you and book your next appointment</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path
+                                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                        </svg>
+                    </div>
+                    <h3>Email</h3>
+                    <p>info@ririesbeauty.co.za</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path
+                                d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+                        </svg>
+                    </div>
+                    <h3>Phone</h3>
+                    <p>+27 (0)12 345 6789</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                        </svg>
+                    </div>
+                    <h3>Location</h3>
+                    <p>123 Beauty Lane, Sandton<br>Johannesburg, Gauteng</p>
+                </div>
+            </div>
+            <a href="https://wa.me/27123456789?text=Hi!%20I'd%20like%20to%20book%20an%20appointment"
+                class="whatsapp-btn" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                </svg>
+                Book via WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ririe's Beauty Office. All rights reserved.</p>
+            <p>Making you look and feel beautiful, one treatment at a time 💖</p>
+            <div class="social-links">
+                <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                </a>
+                <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                </a>
+                <a href="https://tiktok.com" target="_blank" aria-label="TikTok">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+                    </svg>
+                </a>
+                <a href="https://wa.me/27123456789" target="_blank" aria-label="WhatsApp">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading animation
+        window.addEventListener('load', function () {
+            setTimeout(function () {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1500);
+        });
+
+        // Initialize theme on page load
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-icon');
+            if (theme === 'dark') {
+                icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="white"/>';
+            } else {
+                icon.innerHTML = '<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" fill="white"/>';
+            }
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.remove('active');
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 70;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', function () {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Animated counter
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-target'));
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+
+            const timer = setInterval(function () {
+                current += step;
+                if (current >= target) {
+                    element.textContent = target + (element.parentElement.querySelector('.stat-label').textContent.includes('Rate') ? '%' : '+');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current) + (element.parentElement.querySelector('.stat-label').textContent.includes('Rate') ? '%' : '+');
+                }
+            }, 16);
+        }
+
+        // Trigger counter animation when in view
+        const statNumbers = document.querySelectorAll('.stat-number');
+        let animated = false;
+
+        window.addEventListener('scroll', function () {
+            if (!animated) {
+                const statsSection = statNumbers[0].getBoundingClientRect();
+                if (statsSection.top < window.innerHeight) {
+                    statNumbers.forEach(animateCounter);
+                    animated = true;
+                }
+            }
+        });
+
+        // Gallery filter
+        function filterGallery(category) {
+            const items = document.querySelectorAll('#galleryContainer .gallery-item');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Lightbox functionality
+        const allImages = document.querySelectorAll('.gallery-item img');
+        let currentImageIndex = 0;
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = allImages[index].src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(event) {
+            if (event.target.id === 'lightbox' || event.target.classList.contains('lightbox-close')) {
+                document.getElementById('lightbox').classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function changeImage(direction, event) {
+            event.stopPropagation();
+            currentImageIndex += direction;
+
+            if (currentImageIndex < 0) {
+                currentImageIndex = allImages.length - 1;
+            } else if (currentImageIndex >= allImages.length) {
+                currentImageIndex = 0;
+            }
+
+            document.getElementById('lightbox-img').src = allImages[currentImageIndex].src;
+        }
+
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', function (e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    lightbox.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                } else if (e.key === 'ArrowLeft') {
+                    changeImage(-1, e);
+                } else if (e.key === 'ArrowRight') {
+                    changeImage(1, e);
+                }
+            }
+        });
+
+        // Before/After slider
+        function slideCompare(event, index) {
+            const slider = event.currentTarget;
+            const rect = slider.getBoundingClientRect();
+            let x = event.clientX || event.touches[0].clientX;
+            x = x - rect.left;
+
+            const percentage = (x / rect.width) * 100;
+
+            if (percentage >= 0 && percentage <= 100) {
+                const after = document.getElementById('after-' + index);
+                const handle = document.getElementById('handle-' + index);
+                after.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+                handle.style.left = percentage + '%';
+            }
+        }
+
+        // FAQ toggle
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const wasActive = faqItem.classList.contains('active');
+
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            if (!wasActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
+        // Newsletter submission
+        function submitNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input').value;
+            alert(`Thank you for subscribing! We'll send updates to ${email}`);
+            event.target.reset();
+            return false;
+        }
+
+        // Initialize theme when page loads
+        initTheme();
+    </script>
+</body>
+
+</html>
